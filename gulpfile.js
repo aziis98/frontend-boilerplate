@@ -7,42 +7,43 @@ const sass = require('gulp-sass');
 const concat = require('gulp-concat');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
-const cssnano = require('cssnano');
 
 const server = require('browser-sync').create();
 
 function reload(done) {
-  server.reload();
-  done();
+    server.reload();
+    done();
 }
 
 function serve(done) {
-  server.init({
-    server: {
-        baseDir: './'
-    }
-  });
-  done();
+    server.init({
+        server: {
+            baseDir: './'
+        }
+    });
+    done();
 }
 
 const files = {
     htmlPath: 'index.html',
-    scssPath: 'app/scss/**/*.scss',
-    jsPath: 'app/js/**/*.js'
+    scssPath: 'src/scss/**/*.scss',
+    jsPath: 'src/js/**/*.js'
 }
 
 function scssTask() {
     return src(files.scssPath)
         .pipe(sourcemaps.init())
         .pipe(sass())
-        .pipe(postcss([autoprefixer(), cssnano()]))
+        .pipe(postcss([autoprefixer()]))
         .pipe(sourcemaps.write('.'))
         .pipe(dest('dist'));
 }
 
 function jsTask() {
     return src([files.jsPath])
+        .pipe(sourcemaps.init())
         .pipe(concat('bundle.js'))
+        .pipe(sourcemaps.write('.'))
         .pipe(dest('dist'));
 }
 
