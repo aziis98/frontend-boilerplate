@@ -59,6 +59,10 @@ function watchTask() {
 
 exports.default = series(
     parallel(scssTask, jsTask),
+);
+
+exports.dev = series(
+    parallel(scssTask, jsTask),
     serve,
     watchTask
 );
